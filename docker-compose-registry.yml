@@ -1,0 +1,29 @@
+version: '2'
+services:
+  registry_UI:
+    image: joxit/docker-registry-ui:static
+	depend_on:
+	  - bakend_registry
+	ports:
+	  - "4002:80"
+	environment:
+	  - REGISTRY_TITLE="REGISTRE PRIVE IMAGES DOCKER"
+	  - REGISTRY_URL=http://bakend_registry:5000
+	  - DELETE_IMAGES=true
+	networks:
+	  -registry-networks
+	  
+  bakend_registry:
+    image: registry:2
+	ports:
+	  - "5000:5000"
+	volumes:
+	  - registry:/var/lib/registry 
+	networks:
+	  - registry-networks
+	
+volumes:
+  registry:
+
+networks:
+  registry-networks:
